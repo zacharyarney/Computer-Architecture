@@ -66,6 +66,11 @@ but you'll have to implement those three above instructions first!
 * Read this whole file.
 * Skim the spec.
 
+###List of files
+* `cpu.c` emulates our cpu--contains cpu struct and processing functionality
+* `cpu.h` header file for `cpu.c`
+* `ls8.c` main function lives here
+
 ## Step 1: Implement `struct cpu` in `cpu.h`
 
 This structure holds information about the CPU and associated components.
