@@ -1,29 +1,42 @@
 #include "cpu.h"
+// #include <stdlib.h>
+// #include <stdio.h>
+#include <string.h>
 
 #define DATA_LEN 6
+
+unsigned char cpu_ram_read(struct cpu *cpu, unsigned char address) {
+    return cpu->ram[address];
+}
+
+// not sure if this is meant to return anything. void for now.
+void cpu_ram_write(struct cpu *cpu, unsigned char address, unsigned char val) {
+    cpu->ram[address] = val;
+    // return cpu->ram[address];
+}
 
 /**
  * Load the binary bytes from a .ls8 source file into a RAM array
  */
 void cpu_load(struct cpu *cpu)
 {
-  char data[DATA_LEN] = {
-    // From print8.ls8
-    0b10000010, // LDI R0,8
-    0b00000000,
-    0b00001000,
-    0b01000111, // PRN R0
-    0b00000000,
-    0b00000001  // HLT
-  };
+    char data[DATA_LEN] = {
+        // From print8.ls8
+        0b10000010, // LDI R0,8
+        0b00000000,
+        0b00001000,
+        0b01000111, // PRN R0
+        0b00000000,
+        0b00000001  // HLT
+    };
 
-  int address = 0;
+    int address = 0;
 
-  for (int i = 0; i < DATA_LEN; i++) {
-    cpu->ram[address++] = data[i];
-  }
+    for (int i = 0; i < DATA_LEN; i++) {
+        cpu->ram[address++] = data[i];
+    }
 
-  // TODO: Replace this with something less hard-coded
+    // TODO: Replace this with something less hard-coded
 }
 
 /**
