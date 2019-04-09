@@ -1,6 +1,6 @@
 #include "cpu.h"
-// #include <stdlib.h>
-// #include <stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define DATA_LEN 6
@@ -61,20 +61,39 @@ void cpu_run(struct cpu *cpu)
     int running = 1; // True until we get a HLT instruction
 
     while (running) {
-        // TODO
-        unsigned char IR = cpu_ram_read(cpu, cpu->PC);
-        unsigned char operandA = cpu_ram_read(cpu, cpu->PC + 1);
-        unsigned char operandB = cpu_ram_read(cpu, cpu->PC + 2);
-
-        switch(IR) {
-            
+        printf("Registers:\n[ ");
+        for (int i = 0; i<8; i++){
+            printf("%d ", cpu->registers[i]);
         }
+        printf("]\n");
+        // TODO
         // 1. Get the value of the current instruction (in address PC).
         // 2. Figure out how many operands this next instruction requires
         // 3. Get the appropriate value(s) of the operands following this instruction
         // 4. switch() over it to decide on a course of action.
         // 5. Do whatever the instruction should do according to the spec.
         // 6. Move the PC to the next instruction.
+        unsigned int IR = cpu_ram_read(cpu, cpu->PC);
+        unsigned char operandA = cpu_ram_read(cpu, cpu->PC + 1);
+        unsigned char operandB = cpu_ram_read(cpu, cpu->PC + 2);
+
+        switch(IR) {
+            case LDI:
+                printf("LDI:\nIR: %c, operandA: %c, operandB: %c\n", IR, operandA, operandB);
+                cpu_ram_write(cpu, operandA, operandB);
+                IR += 3;
+                break;
+            case PRN:
+                printf("PRN: %c\n", cpu_ram_read(cpu, operandA));
+                IR += 2;
+                break;
+            case HLT:
+                printf("HALTING (HLT)");
+                running = 0;
+            default:
+                printf("Bad instruction\n");
+                exit(1);
+        }
     }
 }
 
