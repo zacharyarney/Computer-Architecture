@@ -18,23 +18,51 @@ void cpu_ram_write(struct cpu *cpu, unsigned char address, unsigned char val) {
 /**
  * Load the binary bytes from a .ls8 source file into a RAM array
  */
-void cpu_load(struct cpu *cpu)
+int cpu_load(struct cpu *cpu, int argc, char **argv)
 {
-    char data[DATA_LEN] = {
-        // From print8.ls8
-        0b10000010, // LDI R0,8
-        0b00000000,
-        0b00001000,
-        0b01000111, // PRN R0
-        0b00000000,
-        0b00000001  // HLT
-    };
-
+    FILE *fp;
+    char line[1024];
     int address = 0;
 
-    for (int i = 0; i < DATA_LEN; i++) {
-        cpu->ram[address++] = data[i];
+    if (argc != 2) {
+        printf("USE FORMAT: ./file file_name.extension\n");
+        return 1;
     }
+
+    fp = fopen(argv[1], "r");
+
+    if (fp == NULL) {
+        printf("Cannot open file\n");
+        return 2;
+    }
+
+    while (fgets(line, 1024, fp) != NULL) {
+        char *endptr;
+        unsigned char val = strtoul(line, &endptr, 2);
+
+        if (line == endptr) {
+            continue;
+        }
+        cpu->ram[address++] = val;
+    }
+
+    fclose(fp);
+
+    // char data[DATA_LEN] = {
+    //     // From print8.ls8
+    //     0b10000010, // LDI R0,8
+    //     0b00000000,
+    //     0b00001000,
+    //     0b01000111, // PRN R0
+    //     0b00000000,
+    //     0b00000001  // HLT
+    // };
+
+    // int address = 0;
+
+    // for (int i = 0; i < DATA_LEN; i++) {
+    //     cpu->ram[address++] = data[i];
+    // }
 
     // TODO: Replace this with something less hard-coded
 }
