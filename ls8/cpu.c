@@ -18,7 +18,7 @@ void cpu_ram_write(struct cpu *cpu, unsigned char address, unsigned char val) {
 /**
  * Load the binary bytes from a .ls8 source file into a RAM array
  */
-int cpu_load(struct cpu *cpu, int argc, char **argv)
+int cpu_load(struct cpu *cpu, int argc, char *argv)
 {
     FILE *fp;
     char line[1024];
@@ -29,7 +29,7 @@ int cpu_load(struct cpu *cpu, int argc, char **argv)
         return 1;
     }
 
-    fp = fopen(argv[1], "r");
+    fp = fopen(argv, "r");
 
     if (fp == NULL) {
         printf("Cannot open file\n");
@@ -47,24 +47,7 @@ int cpu_load(struct cpu *cpu, int argc, char **argv)
     }
 
     fclose(fp);
-
-    // char data[DATA_LEN] = {
-    //     // From print8.ls8
-    //     0b10000010, // LDI R0,8
-    //     0b00000000,
-    //     0b00001000,
-    //     0b01000111, // PRN R0
-    //     0b00000000,
-    //     0b00000001  // HLT
-    // };
-
-    // int address = 0;
-
-    // for (int i = 0; i < DATA_LEN; i++) {
-    //     cpu->ram[address++] = data[i];
-    // }
-
-    // TODO: Replace this with something less hard-coded
+    return 0;
 }
 
 /**
@@ -118,7 +101,7 @@ void cpu_run(struct cpu *cpu)
                 cpu->PC += 2;
                 break;
             case HLT:
-                printf("HALTING (HLT)");
+                // printf("HALTING (HLT)\n");
                 running = 0;
                 break;
             default:
