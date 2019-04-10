@@ -3,19 +3,19 @@
 
 // Holds all information about the CPU
 struct cpu {
-  // TODO
-  // PC
-  unsigned char PC;
-  // registers (array)
-  unsigned char registers[8];
-  // ram (array)
-  unsigned char ram[256];
+    // TODO
+    // PC
+    unsigned char PC;
+    // registers (array)
+    unsigned char registers[8];
+    // ram (array)
+    unsigned char ram[256];
 };
 
 // ALU operations
 enum alu_op {
-	ALU_MUL
-	// Add more here
+    ALU_MUL
+        // Add more here
 };
 
 // Instructions
@@ -30,7 +30,7 @@ enum alu_op {
 
 // Function declarations
 
-extern void cpu_load(struct cpu *cpu);
+extern int cpu_load(struct cpu *cpu, int argc, char **argv);
 extern void cpu_init(struct cpu *cpu);
 extern void cpu_run(struct cpu *cpu);
 
