@@ -106,6 +106,16 @@ void cpu_run(struct cpu *cpu)
                 alu(cpu, ALU_MUL, operandA, operandB);
                 cpu->PC += 3;
                 break;
+            case PUSH:
+                cpu->registers[7]--;
+                cpu->ram[cpu->registers[7]] = cpu->registers[operandA];
+                cpu->PC += 2;
+                break;
+            case POP:
+                cpu->registers[operandA] = cpu->ram[cpu->registers[7]];
+                cpu->registers[7]++;
+                cpu->PC += 2;
+                break;
             case HLT:
                 // printf("HALTING (HLT)\n");
                 running = 0;
@@ -126,4 +136,5 @@ void cpu_init(struct cpu *cpu)
     cpu->PC = 0;
     memset(cpu->registers, 0, sizeof(cpu->registers));
     memset(cpu->ram, 0, sizeof(cpu->ram));
+    cpu->registers[7] = 0xF4;
 }
