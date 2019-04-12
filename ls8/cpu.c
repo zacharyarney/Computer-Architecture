@@ -126,6 +126,9 @@ void cpu_run(struct cpu *cpu)
                 alu(cpu, ALU_CMP, operandA, operandB);
                 cpu->PC += 3;
                 break;
+            case JMP:
+                cpu->PC = cpu->registers[operandA];
+                break;
             case PUSH:
                 cpu->registers[7]--;
                 cpu->ram[cpu->registers[7]] = cpu->registers[operandA];
