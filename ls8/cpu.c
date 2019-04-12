@@ -61,7 +61,23 @@ void alu(struct cpu *cpu, enum alu_op op, unsigned char regA, unsigned char regB
             // turns out `*=` is a thing
             cpu->registers[regA] *= cpu->registers[regB];
             break;
-
+        case ALU_CMP:
+            if (cpu->registers[regA] == cpu->registers[regB]) {
+                cpu->FL = cpu->FL | 0b00000001;
+            } else {
+                cpu->FL = cpu->FL & 0b11111110;
+            }
+            if (cpu->registers[regA] > cpu->registers[regB]) {
+                cpu->FL = cpu->FL | 0b00000010;
+            } else {
+                cpu->FL = cpu->FL & 0b11111101;
+            }
+            if (cpu->registers[regA] < cpu->registers[regB]) {
+                cpu->FL = cpu->FL | 0b00000100;
+            } else {
+                cpu->FL = cpu->FL & 0b11111011;
+            }
+            break;
             // TODO: implement more ALU ops
     }
 }
@@ -106,6 +122,10 @@ void cpu_run(struct cpu *cpu)
                 alu(cpu, ALU_MUL, operandA, operandB);
                 cpu->PC += 3;
                 break;
+            case CMP:
+                alu(cpu, ALU_CMP, operandA, operandB);
+                cpu->PC += 3;
+                break;
             case PUSH:
                 cpu->registers[7]--;
                 cpu->ram[cpu->registers[7]] = cpu->registers[operandA];
@@ -134,6 +154,7 @@ void cpu_init(struct cpu *cpu)
 {
     // TODO: Initialize the PC and other special registers
     cpu->PC = 0;
+    cpu->FL = 0;
     memset(cpu->registers, 0, sizeof(cpu->registers));
     memset(cpu->ram, 0, sizeof(cpu->ram));
     cpu->registers[7] = 0xF4;
