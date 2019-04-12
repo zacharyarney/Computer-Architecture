@@ -23,12 +23,17 @@ struct cpu {
 #define MUL   0b10100010
 #define PUSH  0b01000101
 #define POP   0b01000110
+#define CMP   0b10100111
+#define JMP   0b01010100
+#define JEQ   0b01010101
+#define JNE   0b01010110
 
 // TODO: more instructions here. These can be used in cpu_run().
 
 // ALU operations
 enum alu_op {
     ALU_MUL = MUL,
+    ALU_CMP = CMP,
         // Add more here
 };
 
