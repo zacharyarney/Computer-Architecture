@@ -129,6 +129,24 @@ void cpu_run(struct cpu *cpu)
             case JMP:
                 cpu->PC = cpu->registers[operandA];
                 break;
+            case JEQ:
+                if ((cpu->FL & 0b00000001) == 1) {
+                    // I want to make this use JMP to do this part
+                    // but for the sake of time I'm just copying its code here
+                    cpu->PC = cpu->registers[operandA];
+                } else {
+                    cpu->PC +=2;
+                }
+                break;
+            case JNE:
+                if ((cpu->FL & 0b00000001) == 0) {
+                    // I want to make this use JMP to do this part
+                    // but for the sake of time I'm just copying its code here
+                    cpu->PC = cpu->registers[operandA];
+                } else {
+                    cpu->PC +=2;
+                }
+                break;
             case PUSH:
                 cpu->registers[7]--;
                 cpu->ram[cpu->registers[7]] = cpu->registers[operandA];
